@@ -9,8 +9,8 @@ int main()
 	
 	bzero(&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_port = htons(TGSSERVERPORT);
-    inet_aton(TGSSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
+	serveraddr.sin_port = htons(ASSERVERPORT);
+    inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
 // 	serveraddr.sin_addr.s_addr = htons(INADDR_ANY);
 	
 	if(bind(serverfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) != 0)
@@ -28,15 +28,24 @@ int main()
 			perror("Accept error\n");
 		else 
 			printf("Accept Success\n");	
-	//	char msg[100] = {0};
-		char msg[] = "Hello from tgs server\n";
-		int hold = 0;
-		do{
-			msg[0] = 'a' + hold % 26; 
-			hold++;
-			puts(msg);
-			send(clientfd, msg, sizeof(msg), 0); 
-		}while(recv(clientfd, msg, 100, 0));
+		switch(fork()){
+			case 0:
+				(void) close(serverfd);
+				exit(deal(clientfd));
+			default: 
+				(void) close(clientfd);
+				break;
+			case -1:
+				perror("fork error\n");
+		}
 	}
-	close(clientfd);
+}	
+int deal(int clientfd)
+{
+	char buf[100];
+	int cc;
+	while(cc = read(clientfd, buf, sizeof buf)){
+		write(clientfd, buf, cc);
+	}
+	return 0;
 }

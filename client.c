@@ -20,19 +20,19 @@ int main()
 	clintaddr.sin_addr.s_addr = htons(INADDR_ANY);
 
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_port = htons(ASSERVERPORT);
-    inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
 //	serveraddr.sin_addr.s_addr = inet_pton(AF_INET, "127.0.0.1",
 
 //connect AS
+	serveraddr.sin_port = htons(ASSERVERPORT);
+    inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
 	if(connect(clientFd1, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) != 0)
 		perror("connect AS error\n");
 	else 
 		printf("connect AS success\n");
 
 	char rev[100] = {0};
-	recv(clientFd1, rev, 20, 0);
-	puts(rev);
+//	recv(clientFd1, rev, 20, 0);
+//	puts(rev);
 //	close(clientFd);	
 //connect TGS
 	serveraddr.sin_port = htons(TGSSERVERPORT);
@@ -42,7 +42,7 @@ int main()
 	else 
 		printf("connect TGS success\n");
 
-	while(recv(clientFd2, rev, 100, 0)){
+	while(recv(clientFd1, rev, 100, 0)){
 		puts(rev);
 		send(clientFd2, rev, sizeof(rev), 0); 
 		sleep(2);
