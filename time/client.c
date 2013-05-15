@@ -8,10 +8,10 @@ int main()
 		perror("client socket fail\n");
 	
 //	memset((char *)&clintaddr, 0, sizeof(clintaddr));
-	bzero(&clintaddr, sizeof(clintaddr));
-	clintaddr.sin_family = AF_INET;
-	clintaddr.sin_port = htons(30001);
-	clintaddr.sin_addr.s_addr = htons(INADDR_ANY);
+//	bzero(&clintaddr, sizeof(clintaddr));
+//	clintaddr.sin_family = AF_INET;
+//	clintaddr.sin_port = htons(30001);
+//	clintaddr.sin_addr.s_addr = htons(INADDR_ANY);
 
 //	serveraddr.sin_addr.s_addr = inet_pton(AF_INET, "127.0.0.1",
 

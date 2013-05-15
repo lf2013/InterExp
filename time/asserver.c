@@ -10,8 +10,8 @@ int main()
 	bzero(&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(ASSERVERPORT);
-//    inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
 	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+//    inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
 // 	serveraddr.sin_addr.s_addr = htons(INADDR_ANY);
 	
 	if(bind(serverfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) != 0)
