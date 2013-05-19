@@ -3,7 +3,6 @@ int main()
 {
 	int clientFd, n;
 	struct sockaddr_in clintaddr, serveraddr;//<netinet/in.h>
-	
 	if((clientFd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 		perror("client socket fail\n");
 	
@@ -25,21 +24,44 @@ int main()
 	else 
 		printf("connect success\n");
 	
-	int outchars, inchars;
-	while(scanf("%d", &inchars)){
-		char buf[] = "What's the time?\n";
-		outchars = sizeof(buf);
-//		buf[99] = '\0'; 
-		(void) write(clientFd, buf, outchars);
-		
-/*		for(inchars = 0; inchars < outchars; inchars += n){
-			n = read(clientFd, &buf[inchars], outchars - inchars);
+	int outchars;
+	char flag;
+	char buf[] = "What's the time?\n";
+	outchars = sizeof(buf);
+	time_t now;
+	switch(fork()){
+		case 0:
+		while(1){
+			(void) write(clientFd, buf, outchars);
+			read(clientFd, (char *)&now, sizeof(now));
+			now = ntohl((unsigned long)now);
+			now -= UNIXPOCH;
+			printf("\nThe time one is %sContinue to ask? (y/n)\n", ctime(&now));
+			scanf("%c", &flag);
+			if(flag == 'N'){
+				printf("one is dying\n");
+				return;
+			}
+			flag = 'n';
+			printf("one is sleeping\n");
+			sleep(5);
 		}
-*/
-		time_t now;
-		read(clientFd, (char *)&now, sizeof(now));
-		now = ntohl((unsigned long)now);
-		now -= UNIXPOCH;
-		printf("The time is %s\n", ctime(&now));
+		
+		default:
+		while(1){
+			(void) write(clientFd, buf, outchars);
+			read(clientFd, (char *)&now, sizeof(now));
+			now = ntohl((unsigned long)now);
+			now -= UNIXPOCH;
+			printf("\nThe time two is %sContinue to ask? (y/n)\n", ctime(&now));
+			scanf("%c", &flag);
+			if(flag == 'n'){
+				printf("two is dying\n");
+				return;
+			}
+			flag = 'n';
+			printf("two is sleeping\n");
+			sleep(5);
+		}
 	}
 }
