@@ -7,15 +7,6 @@ int main()
 	if((clientFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		perror("client socket fail\n");
 	
-//	memset((char *)&clintaddr, 0, sizeof(clintaddr));
-//	bzero(&clintaddr, sizeof(clintaddr));
-//	clintaddr.sin_family = AF_INET;
-//	clintaddr.sin_port = htons(30001);
-//	clintaddr.sin_addr.s_addr = htons(INADDR_ANY);
-
-//	serveraddr.sin_addr.s_addr = inet_pton(AF_INET, "127.0.0.1",
-
-//connect AS
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(ASSERVERPORT);
     inet_aton(ASSERVERADDR, &serveraddr.sin_addr);//将a.b.c.d => 二进制
@@ -27,7 +18,6 @@ int main()
 	char buf[100] = {0};
 	int outchars, inchars;
 	while(fgets(buf, sizeof(buf), stdin)){
-//		buf[99] = '\0'; 
 		outchars = strlen(buf);
 		(void) write(clientFd, buf, outchars);
 		

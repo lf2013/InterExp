@@ -8,5 +8,5 @@
 #include <time.h>
 #define UNIXPOCH 2208988800UL
 #define ASSERVERADDR "127.0.0.2"
-#define ASSERVERPORT 12346
+#define ASSERVERPORT 12345
 #define Max 10

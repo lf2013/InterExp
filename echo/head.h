@@ -6,5 +6,5 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 #define ASSERVERADDR "127.0.0.2"
-#define ASSERVERPORT 12342
+#define ASSERVERPORT 12346
 #define Max 10
